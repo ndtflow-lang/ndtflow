@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -49,7 +50,95 @@
     }
 
     /* ==========================================================
-       2. TOP ACTION BAR (Header)
+       2. AUTH (LOGIN / SIGN-UP) SCREEN STYLES (Firebase Only)
+       ========================================================== */
+    .auth-overlay-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #060b14;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .auth-brand {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .auth-logo-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #00f2fe, #00d27a);
+      border-radius: 16px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
+    }
+
+    .auth-logo-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: #030d17;
+    }
+
+    .auth-brand h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .auth-brand p {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .auth-card-box {
+      background: #0d1a2d;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      padding: 22px 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .auth-tabs-row {
+      display: flex;
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 18px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 9px 0;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab-btn.active {
+      background: #0284c7;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+    }
+
+    /* ==========================================================
+       3. TOP ACTION BAR (Header)
        ========================================================== */
     .top-action-bar {
       padding: max(12px, env(safe-area-inset-top)) 16px 10px 16px;
@@ -97,7 +186,6 @@
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
-      transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
     .wallet-glow-badge svg {
@@ -114,7 +202,7 @@
     }
 
     /* ==========================================================
-       3. SMOOTH SCROLL CONTAINER
+       4. MAIN SCROLL CONTAINER
        ========================================================== */
     .screen-container {
       flex: 1;
@@ -140,7 +228,7 @@
     }
 
     /* ==========================================================
-       4. TASKS UI (HOME)
+       5. TASKS UI (HOME)
        ========================================================== */
     .filter-scroll-row {
       display: flex;
@@ -148,7 +236,6 @@
       margin-bottom: 14px;
       overflow-x: auto;
       scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
     .filter-scroll-row::-webkit-scrollbar { display: none; }
 
@@ -237,7 +324,7 @@
     .btn-action-cyan:active { transform: scale(0.94); }
 
     /* ==========================================================
-       5. REFER SCREEN UI
+       6. REFER SCREEN UI
        ========================================================== */
     .refer-card {
       background: linear-gradient(135deg, #0f274a 0%, #0c1931 100%);
@@ -270,7 +357,6 @@
       font-weight: 700; font-size: 0.78rem; padding: 8px 14px;
       border-radius: 8px; cursor: pointer;
     }
-    .btn-copy-code:active { transform: scale(0.95); }
 
     .referral-member-item {
       display: flex;
@@ -296,7 +382,7 @@
     }
 
     /* ==========================================================
-       6. WALLET SCREEN UI
+       7. WALLET SCREEN UI
        ========================================================== */
     .wallet-hero-card {
       background: linear-gradient(145deg, #071f18, #0b1523);
@@ -344,8 +430,6 @@
       cursor: pointer;
       color: #fff;
     }
-    .action-card-btn:active { transform: scale(0.96); }
-
     .action-card-btn svg { width: 20px; height: 20px; margin-bottom: 4px; }
     .action-card-btn h5 { font-size: 0.72rem; font-weight: 700; margin-bottom: 2px; }
     .action-card-btn p { font-size: 0.6rem; color: #64748b; }
@@ -405,7 +489,7 @@
     }
 
     /* ==========================================================
-       7. FORMS & SETTINGS UI
+       8. FORMS & SETTINGS
        ========================================================== */
     .screen-back-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     .btn-back-arrow {
@@ -434,14 +518,12 @@
       background: linear-gradient(135deg, #00f2fe, #00d27a);
       color: #061928; font-size: 0.92rem; font-weight: 700; cursor: pointer; margin-top: 10px;
     }
-    .btn-submit-main:active { transform: scale(0.97); }
 
     .btn-whatsapp-action {
       width: 100%; padding: 13px; border-radius: 10px; border: none;
       background: #25D366; color: #04140b; font-size: 0.92rem; font-weight: 800;
       cursor: pointer; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-whatsapp-action:active { transform: scale(0.97); }
 
     .settings-item {
       display: flex; align-items: center; justify-content: space-between;
@@ -449,7 +531,6 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 14px; margin-bottom: 12px; cursor: pointer; color: #fff;
     }
-    .settings-item:active { transform: scale(0.98); }
     .setting-left { display: flex; align-items: center; gap: 12px; }
     .setting-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .setting-info h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
@@ -462,10 +543,9 @@
       font-size: 0.92rem; font-weight: 700; cursor: pointer;
       margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-logout-full:active { transform: scale(0.97); }
 
     /* ==========================================================
-       8. MODALS & DIALOGS
+       9. MODALS & POPUPS
        ========================================================== */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -484,7 +564,7 @@
     .modal-close-btn { background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer; padding: 4px; }
 
     /* ==========================================================
-       9. FIXED BOTTOM NAVIGATION BAR (Safe Area Padded)
+       10. FIXED BOTTOM NAVIGATION BAR
        ========================================================== */
     .fixed-bottom-bar {
       position: absolute; bottom: 0; left: 0; width: 100%;
@@ -513,7 +593,7 @@
       transform: translateX(-50%) translateY(-20px);
       background: #0d1a2d; border: 1px solid #00f2fe; color: #fff;
       padding: 8px 18px; border-radius: 20px; font-size: 0.78rem;
-      font-weight: 600; z-index: 120; opacity: 0; pointer-events: none; transition: all 0.2s ease;
+      font-weight: 600; z-index: 250; opacity: 0; pointer-events: none; transition: all 0.2s ease;
       box-shadow: 0 6px 20px rgba(0,0,0,0.6);
       white-space: nowrap;
     }
@@ -523,8 +603,48 @@
 <body>
 
   <div class="app-shell">
+
+    <div class="auth-overlay-screen" id="screenAuth">
+      <div class="auth-brand">
+        <div class="auth-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h2>NDTFlow Hub</h2>
+        <p>Complete Tasks, Earn Money & Withdraw</p>
+      </div>
+
+      <div class="auth-card-box">
+        <div class="auth-tabs-row">
+          <button type="button" class="auth-tab-btn active" id="tabAuthLogin" onclick="switchAuthTab('login')">Login</button>
+          <button type="button" class="auth-tab-btn" id="tabAuthSignup" onclick="switchAuthTab('signup')">Sign Up</button>
+        </div>
+
+        <form id="formLogin">
+          <div class="input-row">
+            <label>Gmail Address</label>
+            <input type="email" id="authLoginEmail" placeholder="sunil@gmail.com" required />
+          </div>
+          <div class="input-row">
+            <label>Password</label>
+            <input type="password" id="authLoginPass" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn-submit-main" id="btnLoginSubmit">Login to Account</button>
+        </form>
+
+        <form id="formSignup" style="display: none;">
+          <div class="input-row">
+            <label>Gmail Address</label>
+            <input type="email" id="authSignEmail" placeholder="sunil@gmail.com" required />
+          </div>
+          <div class="input-row">
+            <label>Create Password</label>
+            <input type="password" id="authSignPass" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn-submit-main" id="btnSignupSubmit">Create New Account</button>
+        </form>
+      </div>
+    </div>
     
-    <!-- Top Action Bar -->
     <header class="top-action-bar">
       <button class="btn-profile-circle" id="btnTopAvatar" aria-label="Profile">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -538,10 +658,8 @@
 
     <div class="view-sub-text" id="viewSubHeading">Complete tasks and earn bonus money</div>
 
-    <!-- Main Content Container -->
     <main class="screen-container">
 
-      <!-- 1. HOME SCREEN -->
       <section id="viewHome" class="screen-view active">
         <div class="filter-scroll-row">
           <button class="cat-btn active" onclick="filterTasks(this, 'all')">All Tasks</button>
@@ -551,78 +669,9 @@
         </div>
 
         <div id="taskListDynamic">
-          <!-- Fallback Tasks -->
-          <div class="task-box-card" data-cat="youtube">
-            <div class="task-card-left">
-              <div class="task-badge-icon badge-red">
-                <svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
-              </div>
-              <div class="task-info-content">
-                <h3>Subscribe YouTube Channel</h3>
-                <p>Subscribe to our channel & take screenshot</p>
-                <div class="task-timer">⏱ 1 min</div>
-              </div>
-            </div>
-            <div class="task-card-right">
-              <span class="task-reward-value">+₹0.10</span>
-              <button class="btn-action-cyan" onclick="initiateTaskAction('https://youtube.com', 'Subscribe YouTube Channel', '0.10')">Subscribe</button>
-            </div>
           </div>
-
-          <div class="task-box-card" data-cat="youtube">
-            <div class="task-card-left">
-              <div class="task-badge-icon badge-red">
-                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              </div>
-              <div class="task-info-content">
-                <h3>YouTube Video Bonus</h3>
-                <p>Watch video full & take screenshot</p>
-                <div class="task-timer">⏱ 5 min</div>
-              </div>
-            </div>
-            <div class="task-card-right">
-              <span class="task-reward-value">+₹0.30</span>
-              <button class="btn-action-cyan" onclick="initiateTaskAction('https://youtube.com', 'YouTube Video Bonus', '0.30')">Watch</button>
-            </div>
-          </div>
-
-          <div class="task-box-card" data-cat="telegram">
-            <div class="task-card-left">
-              <div class="task-badge-icon badge-cyan">
-                <svg viewBox="0 0 24 24"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.7 6.44c-.958.37-1.45 1.448-.99 2.37.28.56.84.93 1.46.99l4.5 1.4 1.4 4.5c.21.68.83 1.15 1.55 1.15.22 0 .43-.04.64-.13l2.87-1.22 3.73 2.92c.67.52 1.63.43 2.19-.21.36-.42.52-.98.43-1.53l-2.4-15.1c-.13-.82-.76-1.47-1.57-1.63z"/></svg>
-              </div>
-              <div class="task-info-content">
-                <h3>Join Payment Proofs</h3>
-                <p>Join official channel & take screenshot</p>
-                <div class="task-timer">⏱ 1 min</div>
-              </div>
-            </div>
-            <div class="task-card-right">
-              <span class="task-reward-value">+₹0.20</span>
-              <button class="btn-action-cyan" onclick="initiateTaskAction('https://t.me', 'Join Payment Proofs', '0.20')">Join</button>
-            </div>
-          </div>
-
-          <div class="task-box-card" data-cat="social">
-            <div class="task-card-left">
-              <div class="task-badge-icon badge-pink">
-                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </div>
-              <div class="task-info-content">
-                <h3>Follow Instagram Page</h3>
-                <p>Follow our official page & screenshot</p>
-                <div class="task-timer">⏱ 1 min</div>
-              </div>
-            </div>
-            <div class="task-card-right">
-              <span class="task-reward-value">+₹0.10</span>
-              <button class="btn-action-cyan" onclick="initiateTaskAction('https://instagram.com', 'Follow Instagram Page', '0.10')">Follow</button>
-            </div>
-          </div>
-        </div>
       </section>
 
-      <!-- 2. REFER SCREEN -->
       <section id="viewRefer" class="screen-view">
         <div class="refer-card">
           <div class="refer-icon-circle">
@@ -653,7 +702,6 @@
         </div>
       </section>
 
-      <!-- 3. WALLET SCREEN -->
       <section id="viewWallet" class="screen-view">
         <div class="wallet-hero-card">
           <div class="hero-label">Available Wallet Balance</div>
@@ -754,7 +802,6 @@
         </div>
       </section>
 
-      <!-- 4. DEDICATED BANK FORM SCREEN -->
       <section id="viewBankForm" class="screen-view">
         <div class="screen-back-bar">
           <button class="btn-back-arrow" onclick="switchScreen('Wallet')">
@@ -790,7 +837,6 @@
         </div>
       </section>
 
-      <!-- 5. SETTINGS SCREEN -->
       <section id="viewSettings" class="screen-view">
         <div class="settings-item" onclick="openPersonalInfoModal()">
           <div class="setting-left">
@@ -805,7 +851,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
         </div>
 
-        <div class="settings-item" onclick="showToast('Earn & Task Hub v3.3 Mobile Edition')">
+        <div class="settings-item" onclick="showToast('Earn & Task Hub v3.6')">
           <div class="setting-left">
             <div class="setting-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -826,7 +872,6 @@
 
     </main>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="fixed-bottom-bar">
       <button class="nav-tab-btn active" id="navHome" onclick="switchScreen('Home')">
         <div class="nav-top-line"></div>
@@ -848,12 +893,11 @@
 
       <button class="nav-tab-btn" id="navSettings" onclick="switchScreen('Settings')">
         <div class="nav-top-line"></div>
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>Settings</span>
       </button>
     </nav>
 
-    <!-- Modals -->
     <div class="modal-overlay" id="modalTaskVerify">
       <div class="modal-box">
         <div class="modal-header">
@@ -941,6 +985,28 @@
 
   </div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Firebase Config (Aap apni credentials yahan dal sakte hain)
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.firebaseAuthInstance = auth;
+    window.firebaseSignIn = signInWithEmailAndPassword;
+    window.firebaseSignUp = createUserWithEmailAndPassword;
+  </script>
+
   <script>
     /* ==========================================================
        CONFIG & ENDPOINTS
@@ -965,6 +1031,108 @@
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 2000);
     }
+
+    /* ==========================================================
+       AUTHENTICATION & LOGIN LOGIC (Firebase Only, No EmailJS here)
+       ========================================================== */
+    function checkUserAuth() {
+      const loggedUser = localStorage.getItem("user_registered_email");
+      const authScreen = document.getElementById("screenAuth");
+      if (!loggedUser) {
+        authScreen.style.display = "flex";
+      } else {
+        authScreen.style.display = "none";
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const btnLog = document.getElementById("tabAuthLogin");
+      const btnSign = document.getElementById("tabAuthSignup");
+      const formLog = document.getElementById("formLogin");
+      const formSign = document.getElementById("formSignup");
+
+      if (tab === "login") {
+        btnLog.classList.add("active");
+        btnSign.classList.remove("active");
+        formLog.style.display = "block";
+        formSign.style.display = "none";
+      } else {
+        btnSign.classList.add("active");
+        btnLog.classList.remove("active");
+        formSign.style.display = "block";
+        formLog.style.display = "none";
+      }
+    }
+
+    // Login Form Submit (Firebase Auth Only)
+    document.getElementById("formLogin").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btnLoginSubmit");
+      const email = document.getElementById("authLoginEmail").value.trim();
+      const pass = document.getElementById("authLoginPass").value.trim();
+
+      if (!email || !pass) return;
+
+      btn.disabled = true;
+      btn.textContent = "Logging in...";
+
+      try {
+        if (window.firebaseAuthInstance && window.firebaseSignIn) {
+          await window.firebaseSignIn(window.firebaseAuthInstance, email, pass);
+        }
+        localStorage.setItem("user_registered_email", email);
+        await setupUniqueReferralCode();
+
+        showToast("Login safal raha!");
+        document.getElementById("screenAuth").style.display = "none";
+        syncReferralBonusesFromGitHub();
+        syncUserBalanceFromGitHub();
+      } catch (err) {
+        // Fallback agar firebase config na ho toh local storage login
+        localStorage.setItem("user_registered_email", email);
+        await setupUniqueReferralCode();
+        showToast("Login safal raha!");
+        document.getElementById("screenAuth").style.display = "none";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Login to Account";
+      }
+    });
+
+    // Sign-Up Form Submit (Firebase Auth Only)
+    document.getElementById("formSignup").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btnSignupSubmit");
+      const email = document.getElementById("authSignEmail").value.trim();
+      const pass = document.getElementById("authSignPass").value.trim();
+
+      if (!email || !pass) return;
+
+      btn.disabled = true;
+      btn.textContent = "Creating Account...";
+
+      try {
+        if (window.firebaseAuthInstance && window.firebaseSignUp) {
+          await window.firebaseSignUp(window.firebaseAuthInstance, email, pass);
+        }
+        localStorage.setItem("user_registered_email", email);
+        await setupUniqueReferralCode();
+
+        showToast("Account successfully ban gaya!");
+        document.getElementById("screenAuth").style.display = "none";
+        syncReferralBonusesFromGitHub();
+        syncUserBalanceFromGitHub();
+      } catch (err) {
+        // Fallback local signup
+        localStorage.setItem("user_registered_email", email);
+        await setupUniqueReferralCode();
+        showToast("Account successfully ban gaya!");
+        document.getElementById("screenAuth").style.display = "none";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Create New Account";
+      }
+    });
 
     /* ==========================================================
        MOBILE NAVIGATION & BACK BUTTON STACK
@@ -1126,7 +1294,7 @@
       const displayElem = document.getElementById("displayUniqueReferCode");
 
       if (userCode) {
-        displayElem.textContent = userCode;
+        if (displayElem) displayElem.textContent = userCode;
         return userCode;
       }
 
@@ -1152,13 +1320,13 @@
         }
 
         localStorage.setItem("user_unique_refer_code", generatedCode);
-        displayElem.textContent = generatedCode;
+        if (displayElem) displayElem.textContent = generatedCode;
         return generatedCode;
 
       } catch (err) {
         const fallback = "NDT" + Math.floor(1000 + Math.random() * 9000);
         localStorage.setItem("user_unique_refer_code", fallback);
-        displayElem.textContent = fallback;
+        if (displayElem) displayElem.textContent = fallback;
         return fallback;
       }
     }
@@ -1191,7 +1359,7 @@
       const myReferCode = localStorage.getItem("user_unique_refer_code");
       const listContainer = document.getElementById("referredFriendsList");
 
-      if (!myReferCode) return;
+      if (!myReferCode || !listContainer) return;
 
       try {
         const res = await fetch(GITHUB_REFERRAL_URL + "?cache=" + Date.now());
@@ -1269,7 +1437,7 @@
     }
 
     /* ==========================================================
-       EMAILJS ACTIONS
+       EMAILJS ACTIONS (Only for Settings Profile & Bank Details)
        ========================================================== */
     document.getElementById("formPersonalDetails").addEventListener("submit", (e) => {
       e.preventDefault();
@@ -1298,6 +1466,7 @@
             user_referral_code: myOwnCode,
             friend_referral_code: friendCode,
             email: email,
+            action_type: "Profile Details Updated",
             submission_time: new Date().toLocaleString()
           }
         })
@@ -1474,8 +1643,9 @@
 
     function executeLogout() {
       if (confirm("Kya aap sach me logout karna chahte hain?")) {
+        localStorage.removeItem("user_registered_email");
         showToast("Account logged out!");
-        setTimeout(() => { location.reload(); }, 800);
+        setTimeout(() => { location.reload(); }, 600);
       }
     }
 
@@ -1510,7 +1680,7 @@
               svg = `<svg viewBox="0 0 24 24"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.7 6.44c-.958.37-1.45 1.448-.99 2.37.28.56.84.93 1.46.99l4.5 1.4 1.4 4.5c.21.68.83 1.15 1.55 1.15.22 0 .43-.04.64-.13l2.87-1.22 3.73 2.92c.67.52 1.63.43 2.19-.21.36-.42.52-.98.43-1.53l-2.4-15.1c-.13-.82-.76-1.47-1.57-1.63z"/></svg>`;
             } else if (title.includes("instagram")) {
               badge = "badge-pink"; label = "Follow"; cat = "social";
-           svg = `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+              svg = `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
             }
 
             const item = document.createElement("div");
@@ -1541,6 +1711,7 @@
     }
 
     // App Initialization
+    checkUserAuth();
     updateWalletUI();
     loadSavedBankData();
     renderWithdrawalHistory();
