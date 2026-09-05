@@ -33,7 +33,7 @@
       "title": "Subscribe YouTube Channel",
       "desc": "Subscribe to our channel & take screenshot",
       "time": "1 min",
-      "reward": 0.10,
+      "reward": 1.10,
       "url": "https://youtube.com/@sunnisk-h5t?si=3fuOSaVDf6E8732k"
     },
     {
@@ -41,7 +41,7 @@
       "title": "YouTube Video Bonus",
       "desc": "Watch video full & take screenshot",
       "time": "5 min",
-      "reward": 0.30,
+      "reward": 2.30,
       "url": "https://youtube.com/@sunnisk-h5t?si=3fuOSaVDf6E8732k"
     },
     {
@@ -49,7 +49,7 @@
       "title": "Join Payment Proofs",
       "desc": "Join official channel & take screenshot",
       "time": "1 min",
-      "reward": 0.20,
+      "reward": 0.50,
       "url": "https://t.me/ndtflow"
     },
     {
@@ -57,7 +57,7 @@
       "title": "Join Daily Loot Deals",
       "desc": "Get instant updates & take screenshot",
       "time": "1 min",
-      "reward": 0.20,
+      "reward": 0.50,
       "url": "https://t.me/ndtflow"
     },
     {
@@ -65,7 +65,7 @@
       "title": "Follow Instagram Page",
       "desc": "Follow our official page & screenshot",
       "time": "1 min",
-      "reward": 0.10,
+      "reward": 0.50,
       "url": "https://instagram.com/aapka_username"
     }
   ]
