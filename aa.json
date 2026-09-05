@@ -1,28 +1,72 @@
 {
+  "refer_codes": [
+    "NDT1001",
+    "NDT1002",
+    "NDT1003",
+    "NDT88SK",
+    "NDT9999"
+  ],
+  "referral_bonus_amount": 5.00,
+  "users": [
+    {
+      "email": "user1@gmail.com",
+      "user_refer_code": "NDT1001",
+      "friend_refer_code": "None",
+      "approved_balance": 15.50
+    },
+    {
+      "email": "user2@gmail.com",
+      "user_refer_code": "NDT1002",
+      "friend_refer_code": "NDT1001",
+      "approved_balance": 0.00
+    },
+    {
+      "email": "sunil@gmail.com",
+      "user_refer_code": "NDT1003",
+      "friend_refer_code": "NDT1001",
+      "approved_balance": 5.00
+    }
+  ],
   "tasks": [
     {
       "id": "yt_sub",
       "title": "Subscribe YouTube Channel",
-      "icon": "📺",
+      "desc": "Subscribe to our channel & take screenshot",
+      "time": "1 min",
+      "reward": 0.10,
       "url": "https://youtube.com/@aapka_channel"
     },
     {
       "id": "yt_watch",
-      "title": "Watch YouTube Video",
-      "icon": "▶️",
+      "title": "YouTube Video Bonus",
+      "desc": "Watch video full & take screenshot",
+      "time": "5 min",
+      "reward": 0.30,
       "url": "https://youtube.com/watch?v=aapka_video"
     },
     {
-      "id": "tg_channel",
-      "title": "Join Telegram Channel",
-      "icon": "📢",
+      "id": "tg_proofs",
+      "title": "Join Payment Proofs",
+      "desc": "Join official channel & take screenshot",
+      "time": "1 min",
+      "reward": 0.20,
       "url": "https://t.me/aapka_channel"
     },
     {
-      "id": "tg_group",
-      "title": "Join Telegram Group",
-      "icon": "👥",
+      "id": "tg_loot",
+      "title": "Join Daily Loot Deals",
+      "desc": "Get instant updates & take screenshot",
+      "time": "1 min",
+      "reward": 0.20,
       "url": "https://t.me/aapka_group"
+    },
+    {
+      "id": "ig_follow",
+      "title": "Follow Instagram Page",
+      "desc": "Follow our official page & screenshot",
+      "time": "1 min",
+      "reward": 0.10,
+      "url": "https://instagram.com/aapka_username"
     }
   ]
 }
