@@ -619,6 +619,8 @@
       background: rgba(168, 85, 247, 0.12); padding: 2px 6px;
       border-radius: 6px; font-weight: 600;
     }
+    .tx-status-pill.approved { color: #00d27a; background: rgba(0, 210, 122, 0.15); }
+    .tx-status-pill.rejected { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
 
     /* ==========================================================
        8. FORMS & SETTINGS
@@ -642,6 +644,7 @@
       background: rgba(0, 0, 0, 0.35); color: #fff;
       font-size: 0.9rem; outline: none;
       -webkit-appearance: none;
+      appearance: none;
     }
     .input-row input:focus { border-color: #00d27a; }
 
@@ -650,6 +653,7 @@
       background: linear-gradient(135deg, #00f2fe, #00d27a);
       color: #061928; font-size: 0.92rem; font-weight: 700; cursor: pointer; margin-top: 10px;
     }
+    .btn-submit-main:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .btn-whatsapp-action {
       width: 100%; padding: 13px; border-radius: 10px; border: none;
@@ -737,7 +741,7 @@
   <div class="app-shell">
 
     <!-- ==========================================================
-         [AUTH SCREEN] LOGIN & SIGN UP (WITH CONFIRM PASSWORD)
+         [AUTH SCREEN] LOGIN & SIGN UP
          ========================================================== -->
     <div class="auth-overlay-screen" id="screenAuth">
       <div class="auth-top-header">
@@ -773,6 +777,10 @@
             </button>
           </div>
 
+          <div style="text-align: right; margin-top: -6px; margin-bottom: 8px;">
+            <span style="font-size: 0.72rem; color: #38bdf8; cursor: pointer; text-decoration: underline;" onclick="handleForgotPassword()">Forgot Password?</span>
+          </div>
+
           <button type="submit" class="auth-submit-btn" id="btnLoginSubmit">Login to Account ➔</button>
 
           <div class="auth-footer-link">
@@ -780,12 +788,12 @@
           </div>
         </form>
 
-        <!-- 2. SIGN UP FORM (Password & Confirm Password) -->
+        <!-- 2. SIGN UP FORM -->
         <form id="formSignup">
           <div class="auth-input-group">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             <label>Email Address</label>
-            <input type="email" id="authSignEmail" placeholder="Enter your email" required />
+            <input type="email" id="authSignEmail" placeholder="Enter original Gmail" required />
           </div>
 
           <div class="auth-input-group">
@@ -806,7 +814,17 @@
             </button>
           </div>
 
-          <button type="submit" class="auth-submit-btn" id="btnSignupSubmit">Create New Account ➔</button>
+          <div class="auth-input-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 12l-4-4-4 4M12 16V8"/></svg>
+            <label>Friend's Referral Code (Optional - ₹5 Extra)</label>
+            <input type="text" id="authSignReferralCode" placeholder="Enter friend's code" />
+          </div>
+
+          <div style="background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.35); border-radius: 8px; padding: 7px; margin-top: 4px; font-size: 0.65rem; color: #fca5a5; line-height: 1.25;">
+            ⚠️ <b>Strict Warning:</b> Fake/Temp Gmail banane par account permanently ban hoga aur refer karne wale ka balance bhi deduct kar liya jayega. Ek device/number se sirf ek hi account allow hai.
+          </div>
+
+          <button type="submit" class="auth-submit-btn" id="btnSignupSubmit">Create New Account (Get ₹5) ➔</button>
 
           <div class="auth-footer-link">
             Already have an account? <span onclick="switchAuthTab('login')">Login</span>
@@ -869,7 +887,7 @@
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
           </div>
           <h3 class="refer-title">Invite & Earn Bonus!</h3>
-          <p class="refer-desc">Apne friend ko apna code share karein aur instant bonus paayein.</p>
+          <p class="refer-desc">Apne dost ko code share karein. Fake IDs ka use karne par refer balance deduct kar liya jayega.</p>
 
           <div class="code-display-box">
             <div>
@@ -885,7 +903,7 @@
         <div class="content-box-card">
           <div class="box-header-flex">
             <h4>Invited Friends (Database Sync)</h4>
-            <span class="green-link" onclick="syncReferralBonusesFromGitHub()">Sync Now ⟳</span>
+            <span class="green-link" id="txtTotalReferralsCount">0 Joined</span>
           </div>
           <div id="referredFriendsList">
             <p style="text-align: center; font-size: 0.75rem; color: #64748b; padding: 10px;">Checking referrals database...</p>
@@ -907,7 +925,7 @@
             </div>
             <div class="substat-cell">
               <span>⏱ Pending Tasks</span>
-              <span style="color: #eab308;" id="txtPendingTasksCount">0 Tasks</span>
+              <span style="color: #eab308;" id="txtPendingTasksCount">Manual Review</span>
             </div>
             <div class="substat-cell">
               <span>↩ Total Withdrawn</span>
@@ -984,12 +1002,12 @@
 
         <div class="content-box-card">
           <div class="box-header-flex">
-            <h4>Payment History</h4>
-            <span class="green-link" onclick="showToast('History refreshed')">Refresh</span>
+            <h4>Payment History (Firestore Verified)</h4>
+            <span class="green-link" onclick="loadWithdrawalHistoryFromFirestore()">Refresh</span>
           </div>
 
           <div id="historyListContainer">
-            <p id="txtNoHistoryNotice" style="text-align: center; font-size: 0.78rem; color: #64748b; padding: 14px;">No withdrawal history yet.</p>
+            <p id="txtNoHistoryNotice" style="text-align: center; font-size: 0.78rem; color: #64748b; padding: 14px;">Loading withdrawal history...</p>
           </div>
         </div>
       </section>
@@ -1045,14 +1063,14 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
         </div>
 
-        <div class="settings-item" onclick="showToast('Earn & Task Hub v3.9')">
+        <div class="settings-item" onclick="showToast('NDTFlow v4.5 Security Edition')">
           <div class="setting-left">
             <div class="setting-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </div>
             <div class="setting-info">
-              <h4>About & Version</h4>
-              <p>App details & database sync</p>
+              <h4>About & Anti-Fraud Security</h4>
+              <p>1 Device - 1 Number Policy Active</p>
             </div>
           </div>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -1088,7 +1106,7 @@
 
       <button class="nav-tab-btn" id="navSettings" onclick="switchScreen('Settings')">
         <div class="nav-top-line"></div>
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>Settings</span>
       </button>
     </nav>
@@ -1104,10 +1122,13 @@
           <div style="font-size: 2.2rem; margin-bottom: 8px;">📸</div>
           <h4 id="txtTaskVerifyTitle" style="color: #fff; margin-bottom: 6px;">Task Action Complete</h4>
           <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin-bottom: 12px;">
-            Reward paane ke liye is task ka screenshot apne registered Gmail ke sath hamare WhatsApp par bhejein.
+            Reward paane ke liye task screenshot aur apni registered Gmail ko WhatsApp par bhejein.
           </p>
+          <div style="background: rgba(239,68,68,0.1); border: 1px dashed rgba(239,68,68,0.35); border-radius: 8px; padding: 8px; margin-bottom: 12px; font-size: 0.68rem; color: #fca5a5; line-height: 1.3;">
+            ⚠️ <b>Verification Rule:</b> Ek hi WhatsApp number ya device se multiple accounts ke screenshot bhejne par account permanently ban hoga aur balance add nahi kiya jayega.
+          </div>
           <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 8px; margin-bottom: 14px; font-size: 0.75rem; color: #38bdf8;">
-            WhatsApp: <b>9835037619</b>
+            Admin WhatsApp: <b>9835037619</b>
           </div>
           <button type="button" class="btn-whatsapp-action" onclick="sendTaskProofToWhatsApp()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-.992-.061-.599-.196-1.579-.691-2.481-1.503-.941-.849-1.528-1.859-1.745-2.203-.217-.344-.014-.531.13-.675.13-.13.289-.333.433-.506.144-.173.192-.289.289-.477.096-.188.048-.361-.024-.506-.072-.144-.649-1.562-.89-2.141-.235-.563-.473-.487-.649-.496l-.553-.01c-.192 0-.505.072-.77.361-.264.289-1.01 0.987-1.01 2.406 0 1.419 1.033 2.789 1.178 2.983.144.192 2.031 3.102 4.922 4.35.688.298 1.226.475 1.644.608.691.22 1.32.189 1.818.115.556-.083 1.708-.698 1.948-1.371.24-.674.24-1.251.168-1.371-.072-.12-.264-.192-.408-.264z"/></svg>
@@ -1117,6 +1138,7 @@
       </div>
     </div>
 
+    <!-- Modal: Personal Information Form -->
     <div class="modal-overlay" id="modalPersonal">
       <div class="modal-box">
         <div class="modal-header">
@@ -1145,14 +1167,15 @@
 
           <div class="input-row">
             <label>Gmail Address</label>
-            <input type="email" id="inputEmail" placeholder="sunil@gmail.com" required />
+            <input type="email" id="inputEmail" placeholder="sunil@gmail.com" required readonly style="opacity: 0.8; cursor: not-allowed;" />
           </div>
 
-          <button type="submit" class="btn-submit-main" id="btnSavePersonal">Save & Submit Details</button>
+          <button type="submit" class="btn-submit-main" id="btnSavePersonal">Save to Firestore</button>
         </form>
       </div>
     </div>
 
+    <!-- Modal: Withdrawal -->
     <div class="modal-overlay" id="modalWithdraw">
       <div class="modal-box">
         <div class="modal-header">
@@ -1165,14 +1188,14 @@
             <span style="font-size: 1.3rem; font-weight: 800; color: #00d27a;" id="txtModalAvailBal">₹0.00</span>
           </div>
           <div class="input-row">
-            <label>Amount (₹)</label>
+            <label>Amount (₹) <span style="color: #00f2fe; font-size: 0.68rem;">(Min ₹1.00)</span></label>
             <input type="number" id="inWithdrawAmount" min="1" step="0.1" placeholder="Minimum ₹1.00" required />
           </div>
           <div class="input-row">
             <label>Transfer To</label>
             <input type="text" id="inWithdrawDest" value="UPI: Not Set" readonly style="opacity: 0.7;" />
           </div>
-          <button type="submit" class="btn-submit-main">Confirm Payout</button>
+          <button type="submit" class="btn-submit-main" id="btnConfirmWithdrawal">Confirm Payout</button>
         </form>
       </div>
     </div>
@@ -1181,57 +1204,87 @@
 
   </div>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase & Firestore SDKs v10 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      sendPasswordResetEmail,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      getDoc, 
+      updateDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      runTransaction,
+      onSnapshot 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // 1. Firebase Configuration
     const firebaseConfig = {
-      apiKey: "YOUR_FIREBASE_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyASfCNcZx0KQZgaLCGNJPCw8Ml6R47is4k",
+      authDomain: "ndtflow-6102e.firebaseapp.com",
+      projectId: "ndtflow-6102e",
+      storageBucket: "ndtflow-6102e.firebasestorage.app",
+      messagingSenderId: "820246244808",
+      appId: "1:820246244808:web:2bdd9b798a54c6984064fd",
+      measurementId: "G-NE56T39SR5"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    window.firebaseAuthInstance = auth;
-    window.firebaseSignIn = signInWithEmailAndPassword;
-    window.firebaseSignUp = createUserWithEmailAndPassword;
-  </script>
+    // Direct and CORS-free GitHub Raw URL
+    const GITHUB_TASKS_URL = "https://raw.githubusercontent.com/ndtflow-lang/ndtflow/main/aa.json";
 
-  <script>
-    /* ==========================================================
-       CONFIG & ENDPOINTS
-       ========================================================== */
-    const GITHUB_TASKS_URL = "https://raw.githubusercontent.com/ndtflow-lang/ndtflow/refs/heads/main/aa.json";
-    const GITHUB_REFERRAL_URL = "https://raw.githubusercontent.com/ndtflow-lang/ndtflow/refs/heads/main/aa.json";
-    const GITHUB_USERS_URL = "https://raw.githubusercontent.com/ndtflow-lang/ndtflow/refs/heads/main/aa.json";
-
-    const EMAILJS_SERVICE_ID = "service_278sasl";
-    const EMAILJS_PUBLIC_KEY = "7tMXQbDBF7EUl5LBS";
-    const EMAILJS_PERSONAL_TEMPLATE = "template_d6zoxqa";
-    const EMAILJS_BANK_TEMPLATE = "template_v34njnd";
+    let currentBalance = 0.00;
+    let currentUserEmail = null;
+    let pendingTaskName = "";
+    let unsubUserListener = null;
+    let unsubBankListener = null;
+    let unsubWithdrawListener = null;
 
     const toast = document.getElementById("toastPill");
-
-    let savedBalance = localStorage.getItem("user_real_balance");
-    let currentBalance = savedBalance !== null ? parseFloat(savedBalance) : 0.00;
-    let pendingTaskName = "";
 
     function showToast(msg) {
       toast.textContent = msg;
       toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2000);
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+    window.showToast = showToast;
+
+    // Fake/Temp mail domains blocklist
+    const BLOCKED_DOMAINS = ["tempmail.com", "10minutemail.com", "guerrillamail.com", "mailinator.com", "throwawaymail.com", "dispostable.com", "yopmail.com", "trashmail.com"];
+
+    function isInvalidOrFakeEmail(email) {
+      if (!email || !email.includes("@")) return true;
+      const domain = email.split("@")[1].toLowerCase();
+      return BLOCKED_DOMAINS.includes(domain);
     }
 
-    /* ==========================================================
-       PASSWORD EYE TOGGLE
-       ========================================================== */
-    function togglePassVisibility(inputId, btn) {
+    function updateWalletUI(bal) {
+      if (bal !== undefined && bal !== null) {
+        currentBalance = parseFloat(bal);
+      }
+      const formatted = "₹" + currentBalance.toFixed(2);
+      document.getElementById("txtTopWalletBadge").textContent = formatted;
+      document.getElementById("txtWalletHeroBal").textContent = formatted;
+      document.getElementById("txtTotalEarned").textContent = formatted;
+      document.getElementById("txtModalAvailBal").textContent = formatted;
+    }
+
+    // Toggle Password Visibility
+    window.togglePassVisibility = function(inputId, btn) {
       const input = document.getElementById(inputId);
       if (input.type === "password") {
         input.type = "text";
@@ -1240,23 +1293,25 @@
         input.type = "password";
         btn.style.color = "#64748b";
       }
-    }
+    };
 
-    /* ==========================================================
-       AUTHENTICATION FLOW (Sign Up First for New Members)
-       ========================================================== */
-    function checkUserAuth() {
-      const loggedUser = localStorage.getItem("user_registered_email");
-      const authScreen = document.getElementById("screenAuth");
-      if (!loggedUser) {
-        authScreen.style.display = "flex";
-        switchAuthTab('signup');
-      } else {
-        authScreen.style.display = "none";
+    // Forgot Password Trigger
+    window.handleForgotPassword = async function() {
+      const email = document.getElementById("authLoginEmail").value.trim();
+      if (!email) {
+        showToast("Pehle apna Email address enter karein!");
+        return;
       }
-    }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showToast("Password reset link aapke email par bhej diya gaya hai!");
+      } catch (e) {
+        showToast("Reset Error: " + e.message);
+      }
+    };
 
-    function switchAuthTab(tab) {
+    // Auth screen tab switcher
+    window.switchAuthTab = function(tab) {
       const btnLog = document.getElementById("tabAuthLogin");
       const btnSign = document.getElementById("tabAuthSignup");
       const formLog = document.getElementById("formLogin");
@@ -1276,17 +1331,179 @@
         formLog.style.display = "none";
         welcomeTxt.textContent = "Create Account 🚀";
       }
+    };
+
+    // 2. Generate Guaranteed Unique Referral Code
+    async function generateUniqueReferralCode() {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let uniqueCode = "";
+      let isUnique = false;
+
+      while (!isUnique) {
+        uniqueCode = "NDT";
+        for (let i = 0; i < 4; i++) {
+          uniqueCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        const q = query(collection(db, "users"), where("userReferCode", "==", uniqueCode));
+        const snap = await getDocs(q);
+        if (snap.empty) {
+          isUnique = true;
+        }
+      }
+      return uniqueCode;
     }
 
-    // 1. Sign-Up Form Submit (Password & Confirm Password)
+    // 3. Realtime Listener for Current User's Profile, Balance & Bank Details
+    function listenUserData(email) {
+      if (unsubUserListener) unsubUserListener();
+      if (unsubBankListener) unsubBankListener();
+
+      // Listen to users collection
+      unsubUserListener = onSnapshot(doc(db, "users", email), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const bal = data.balance !== undefined ? data.balance : 0;
+          updateWalletUI(bal);
+
+          const myCode = data.userReferCode || data.referral_code || "NDT1234";
+          document.getElementById("displayUniqueReferCode").textContent = myCode;
+          document.getElementById("inputMyOwnReferral").value = myCode;
+          localStorage.setItem("user_unique_refer_code", myCode);
+
+          if (data.name) document.getElementById("inputFullName").value = data.name;
+          if (data.userId) document.getElementById("inputUserId").value = data.userId;
+          
+          const friendCode = data.FriendReferCode || data.friend_refer_code || "";
+          if (friendCode && friendCode !== "None") {
+            document.getElementById("inputFriendReferral").value = friendCode;
+          }
+
+          if (data.total_referrals !== undefined) {
+            document.getElementById("txtTotalReferralsCount").textContent = `${data.total_referrals} Joined`;
+          }
+        }
+      }, (err) => {
+        console.error("User listener error:", err);
+      });
+
+      // Listen to bank_details collection
+      unsubBankListener = onSnapshot(doc(db, "bank_details", email), (bSnap) => {
+        if (bSnap.exists()) {
+          const bd = bSnap.data();
+          document.getElementById("txtDisplayBankName").textContent = bd.bank_name || "Not Added Yet";
+          document.getElementById("txtDisplayAccNum").textContent = bd.account_number ? ("•••• •••• " + bd.account_number.slice(-4)) : "•••• •••• ----";
+          document.getElementById("txtDisplayIfsc").textContent = bd.ifsc_code || "----";
+          document.getElementById("txtDisplayHolder").textContent = bd.account_holder || "----";
+          document.getElementById("txtDisplayUpiId").textContent = bd.upi_id || "Not Set";
+          document.getElementById("inWithdrawDest").value = bd.upi_id ? ("UPI: " + bd.upi_id) : "UPI: Not Set";
+
+          document.getElementById("inBankName").value = bd.bank_name || "";
+          document.getElementById("inAccNum").value = bd.account_number || "";
+          document.getElementById("inIfsc").value = bd.ifsc_code || "";
+          document.getElementById("inHolder").value = bd.account_holder || "";
+          document.getElementById("inUpi").value = bd.upi_id || "";
+        }
+      }, (err) => {
+        console.error("Bank listener error:", err);
+      });
+
+      // Load Firestore Withdrawal History directly
+      listenWithdrawalHistoryFromFirestore(email);
+    }
+
+    // 4. Firestore-based Realtime Withdrawal History
+    function listenWithdrawalHistoryFromFirestore(email) {
+      if (unsubWithdrawListener) unsubWithdrawListener();
+
+      const q = query(collection(db, "withdrawals"), where("email", "==", email));
+      unsubWithdrawListener = onSnapshot(q, (snapshot) => {
+        const histContainer = document.getElementById("historyListContainer");
+        if (!histContainer) return;
+
+        if (snapshot.empty) {
+          histContainer.innerHTML = `<p id="txtNoHistoryNotice" style="text-align: center; font-size: 0.78rem; color: #64748b; padding: 14px;">No withdrawal history yet.</p>`;
+          document.getElementById("txtTotalWithdrawn").textContent = "₹0.00";
+          return;
+        }
+
+        let totalWithdrawnAmt = 0;
+        let docsArray = [];
+        snapshot.forEach(doc => {
+          const item = doc.data();
+          docsArray.push(item);
+          if (item.status && item.status.toLowerCase() === "approved") {
+            totalWithdrawnAmt += parseFloat(item.amount || 0);
+          }
+        });
+
+        docsArray.sort((a, b) => new Date(b.requested_at || 0) - new Date(a.requested_at || 0));
+
+        histContainer.innerHTML = "";
+        docsArray.forEach(tx => {
+          const row = document.createElement("div");
+          row.className = "recent-tx-row";
+
+          const statusLower = (tx.status || "pending").toLowerCase();
+          let statusClass = "tx-status-pill";
+          let statusLabel = "Pending";
+
+          if (statusLower === "approved") {
+            statusClass = "tx-status-pill approved";
+            statusLabel = "Approved";
+          } else if (statusLower === "rejected") {
+            statusClass = "tx-status-pill rejected";
+            statusLabel = "Rejected";
+          }
+
+          const displayDate = tx.requested_at ? new Date(tx.requested_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : "Recently";
+
+          row.innerHTML = `
+            <div class="tx-left-info">
+              <div class="tx-clock-badge">⏱</div>
+              <div>
+                <span style="font-size: 0.82rem; font-weight: 700; display: block;">Withdrawal Requested</span>
+                <span style="font-size: 0.65rem; color: #64748b;">${tx.transfer_to || "Bank/UPI"}</span>
+              </div>
+            </div>
+            <div class="tx-right-info">
+              <span class="tx-amount">-₹${parseFloat(tx.amount || 0).toFixed(2)}</span>
+              <div style="font-size: 0.62rem; color: #64748b;">${displayDate}</div>
+              <span class="${statusClass}">${statusLabel}</span>
+            </div>
+          `;
+          histContainer.appendChild(row);
+        });
+
+        document.getElementById("txtTotalWithdrawn").textContent = "₹" + totalWithdrawnAmt.toFixed(2);
+      }, (err) => {
+        console.error("Withdrawal history error:", err);
+      });
+    }
+    window.loadWithdrawalHistoryFromFirestore = () => {
+      if (currentUserEmail) listenWithdrawalHistoryFromFirestore(currentUserEmail);
+    };
+
+    // 5. Sign-Up Form Submit (Fake Gmail & Self-Referral Protection with Anti-Fraud Penalty Warning)
     document.getElementById("formSignup").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = document.getElementById("authSignEmail").value.trim();
+      const email = document.getElementById("authSignEmail").value.trim().toLowerCase();
       const pass = document.getElementById("authSignPass").value.trim();
       const confirmPass = document.getElementById("authSignConfirmPass").value.trim();
+      const enteredReferCode = document.getElementById("authSignReferralCode") ? document.getElementById("authSignReferralCode").value.trim().toUpperCase() : "";
+
+      if (isInvalidOrFakeEmail(email)) {
+        showToast("Error: Fake ya temporary mail allow nahi hai! Real Gmail use karein.");
+        return;
+      }
 
       if (pass !== confirmPass) {
         showToast("Error: Dono password match nahi ho rahe hain!");
+        return;
+      }
+
+      if (pass.length < 6) {
+        showToast("Password kam se kam 6 characters ka hona chahiye!");
         return;
       }
 
@@ -1295,26 +1512,69 @@
       btn.textContent = "Creating Account...";
 
       try {
-        if (window.firebaseAuthInstance && window.firebaseSignUp) {
-          await window.firebaseSignUp(window.firebaseAuthInstance, email, pass);
+        await createUserWithEmailAndPassword(auth, email, pass);
+        const uniqueReferCode = await generateUniqueReferralCode();
+        let referrerEmail = null;
+
+        // Self-referral protection & Friend referral credit
+        if (enteredReferCode !== "") {
+          if (enteredReferCode === uniqueReferCode) {
+            showToast("Aap apna hi referral code use nahi kar sakte!");
+          } else {
+            const refQ = query(collection(db, "users"), where("userReferCode", "==", enteredReferCode));
+            const refSnap = await getDocs(refQ);
+
+            if (!refSnap.empty) {
+              const referrerDoc = refSnap.docs[0];
+              referrerEmail = referrerDoc.id;
+
+              // Friend referral credit via atomic transaction
+              const referrerRef = doc(db, "users", referrerEmail);
+              await runTransaction(db, async (transaction) => {
+                const rDoc = await transaction.get(referrerRef);
+                if (rDoc.exists()) {
+                  const prevBal = parseFloat(rDoc.data().balance || 0);
+                  const prevRefs = parseInt(rDoc.data().total_referrals || 0);
+                  transaction.update(referrerRef, {
+                    balance: prevBal + 5.00,
+                    total_referrals: prevRefs + 1
+                  });
+                }
+              });
+            } else {
+              showToast("Referral code exist nahi karta, par account ban gaya.");
+            }
+          }
         }
-        showToast("Account successfully ban gaya! Ab Login karein.");
+
+        // Firestore user schema save
+        await setDoc(doc(db, "users", email), {
+          email: email,
+          name: email.split("@")[0],
+          userId: email.split("@")[0] + "123",
+          userReferCode: uniqueReferCode,
+          FriendReferCode: enteredReferCode || "None",
+          referred_by: referrerEmail || "None",
+          balance: 5,
+          total_referrals: 0,
+          createdAt: new Date().toISOString()
+        });
+
+        showToast("Account ban gaya! Real user verification ke baad bonus add hoga.");
         switchAuthTab('login');
         document.getElementById("authLoginEmail").value = email;
       } catch (err) {
-        showToast("Account successfully ban gaya! Ab Login karein.");
-        switchAuthTab('login');
-        document.getElementById("authLoginEmail").value = email;
+        showToast(err.message || "Signup failed!");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Create New Account ➔";
+        btn.textContent = "Create New Account (Get ₹5) ➔";
       }
     });
 
-    // 2. Login Form Submit
+    // 6. Login Form Submit
     document.getElementById("formLogin").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = document.getElementById("authLoginEmail").value.trim();
+      const email = document.getElementById("authLoginEmail").value.trim().toLowerCase();
       const pass = document.getElementById("authLoginPass").value.trim();
 
       if (!email || !pass) return;
@@ -1324,30 +1584,327 @@
       btn.textContent = "Logging in...";
 
       try {
-        if (window.firebaseAuthInstance && window.firebaseSignIn) {
-          await window.firebaseSignIn(window.firebaseAuthInstance, email, pass);
-        }
+        await signInWithEmailAndPassword(auth, email, pass);
         localStorage.setItem("user_registered_email", email);
-        await setupUniqueReferralCode();
-
         showToast("Login safal raha!");
         document.getElementById("screenAuth").style.display = "none";
-        syncReferralBonusesFromGitHub();
-        syncUserBalanceFromGitHub();
       } catch (err) {
-        localStorage.setItem("user_registered_email", email);
-        await setupUniqueReferralCode();
-        showToast("Login safal raha!");
-        document.getElementById("screenAuth").style.display = "none";
+        showToast("Login Error: " + (err.message || "Invalid login credentials"));
       } finally {
         btn.disabled = false;
         btn.textContent = "Login to Account ➔";
       }
     });
 
-    /* ==========================================================
-       OPTIMIZED SCREEN NAVIGATION & HISTORY STACK (REPLACE STATE)
-       ========================================================== */
+    // 7. Withdrawal Submit (Zero double-click risk + Bank Details Verification required)
+    document.getElementById("formWithdraw").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btnConfirmWithdrawal");
+      const amount = parseFloat(document.getElementById("inWithdrawAmount").value);
+      const dest = document.getElementById("inWithdrawDest").value;
+
+      if (!currentUserEmail) {
+        showToast("Pehle login karein!");
+        return;
+      }
+
+      // Check: Bank/UPI added or not
+      if (!dest || dest.includes("Not Set")) {
+        showToast("Error: Pehle 'Add Account' par jakar apna Bank ya UPI ID jodein!");
+        return;
+      }
+
+      if (isNaN(amount) || amount < 1) {
+        showToast("Minimum withdrawal amount ₹1.00 hai!");
+        return;
+      }
+
+      if (amount > currentBalance) {
+        showToast("Error: Available balance kam hai!");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Processing...";
+
+      try {
+        const userRef = doc(db, "users", currentUserEmail);
+        const withdrawId = "w_" + Date.now();
+        const withdrawRef = doc(db, "withdrawals", withdrawId);
+
+        await runTransaction(db, async (transaction) => {
+          const uDoc = await transaction.get(userRef);
+          if (!uDoc.exists()) {
+            throw new Error("User record nahi mila!");
+          }
+
+          const existingBalance = parseFloat(uDoc.data().balance || 0);
+          if (existingBalance < amount) {
+            throw new Error("Paryapt balance nahi hai!");
+          }
+
+          const updatedBal = existingBalance - amount;
+          transaction.update(userRef, { balance: updatedBal });
+
+          transaction.set(withdrawRef, {
+            withdrawal_id: withdrawId,
+            email: currentUserEmail,
+            amount: amount,
+            transfer_to: dest,
+            status: "pending",
+            reject_reason: "",
+            requested_at: new Date().toISOString()
+          });
+        });
+
+        closeModal("modalWithdraw");
+        document.getElementById("inWithdrawAmount").value = "";
+        showToast("Withdrawal request lag gayi aur balance deduct ho gaya!");
+      } catch (err) {
+        showToast("Withdrawal error: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Confirm Payout";
+      }
+    });
+
+    // 8. Save Bank Details to Firestore (`bank_details` collection)
+    document.getElementById("dedicatedBankForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUserEmail) {
+        showToast("Pehle login karein!");
+        return;
+      }
+
+      const btn = document.getElementById("btnSaveBankDetails");
+      btn.disabled = true;
+      btn.textContent = "Saving to Database...";
+
+      const bank = document.getElementById("inBankName").value.trim();
+      const acc = document.getElementById("inAccNum").value.trim();
+      const ifsc = document.getElementById("inIfsc").value.trim();
+      const holder = document.getElementById("inHolder").value.trim();
+      const upi = document.getElementById("inUpi").value.trim();
+
+      try {
+        await setDoc(doc(db, "bank_details", currentUserEmail), {
+          email: currentUserEmail,
+          bank_name: bank,
+          account_number: acc,
+          ifsc_code: ifsc,
+          account_holder: holder,
+          upi_id: upi,
+          updated_at: new Date().toISOString()
+        }, { merge: true });
+
+        showToast("Bank details Firestore me save ho gayi!");
+        switchScreen("Wallet");
+      } catch (err) {
+        showToast("Save error: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Save & Submit Bank Details";
+      }
+    });
+
+    // 9. Save Personal Info to Firestore (`users` collection)
+    document.getElementById("formPersonalDetails").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUserEmail) return;
+
+      const btn = document.getElementById("btnSavePersonal");
+      btn.disabled = true;
+      btn.textContent = "Saving to Database...";
+
+      const name = document.getElementById("inputFullName").value.trim();
+      const userId = document.getElementById("inputUserId").value.trim();
+      const friendCode = document.getElementById("inputFriendReferral").value.trim() || "None";
+
+      try {
+        await updateDoc(doc(db, "users", currentUserEmail), {
+          name: name,
+          userId: userId,
+          FriendReferCode: friendCode,
+          updatedAt: new Date().toISOString()
+        });
+
+        showToast("Personal details Firestore me save ho gayi!");
+        closeModal("modalPersonal");
+      } catch (err) {
+        showToast("Save error: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Save to Firestore";
+      }
+    });
+
+    // 10. Auth State Observer
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUserEmail = user.email.toLowerCase();
+        localStorage.setItem("user_registered_email", currentUserEmail);
+        document.getElementById("inputEmail").value = currentUserEmail;
+        document.getElementById("screenAuth").style.display = "none";
+        listenUserData(currentUserEmail);
+        fetchTasksFromGitHub();
+      } else {
+        currentUserEmail = null;
+        if (unsubUserListener) unsubUserListener();
+        if (unsubBankListener) unsubBankListener();
+        if (unsubWithdrawListener) unsubWithdrawListener();
+        document.getElementById("screenAuth").style.display = "flex";
+        switchAuthTab('signup');
+      }
+    });
+
+    // 11. Dynamic Tasks from GitHub aa.json (CORS Preflight Free)
+    async function fetchTasksFromGitHub() {
+      const list = document.getElementById("taskListDynamic");
+      if (!list) return;
+
+      try {
+        const response = await fetch(GITHUB_TASKS_URL + "?nocache=" + Date.now());
+
+        if (!response.ok) {
+          throw new Error("HTTP Status: " + response.status);
+        }
+
+        const data = await response.json();
+        const tasks = data.tasks || (Array.isArray(data) ? data : []);
+
+        if (tasks.length === 0) {
+          list.innerHTML = `<p style="text-align: center; font-size: 0.8rem; color: #64748b; padding: 20px;">No tasks available right now.</p>`;
+          return;
+        }
+
+        list.innerHTML = "";
+        tasks.forEach(t => {
+          let badge = "badge-cyan";
+          let label = "Open";
+          let cat = "all";
+          let svg = `<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+
+          const title = (t.title || "").toLowerCase();
+          if (title.includes("youtube") && title.includes("subscribe")) {
+            badge = "badge-red"; label = "Subscribe"; cat = "youtube";
+            svg = `<svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>`;
+          } else if (title.includes("video")) {
+            badge = "badge-red"; label = "Watch"; cat = "youtube";
+            svg = `<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+          } else if (title.includes("telegram")) {
+            badge = "badge-cyan"; label = "Join"; cat = "telegram";
+            svg = `<svg viewBox="0 0 24 24"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.7 6.44c-.958.37-1.45 1.448-.99 2.37.28.56.84.93 1.46.99l4.5 1.4 1.4 4.5c.21.68.83 1.15 1.55 1.15.22 0 .43-.04.64-.13l2.87-1.22 3.73 2.92c.67.52 1.63.43 2.19-.21.36-.42.52-.98.43-1.53l-2.4-15.1c-.13-.82-.76-1.47-1.57-1.63z"/></svg>`;
+          } else if (title.includes("instagram")) {
+            badge = "badge-pink"; label = "Follow"; cat = "social";
+            svg = `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+          }
+
+          const item = document.createElement("div");
+          item.className = "task-box-card";
+          item.setAttribute("data-cat", cat);
+          item.innerHTML = `
+            <div class="task-card-left">
+              <div class="task-badge-icon ${badge}">
+                ${svg}
+              </div>
+              <div class="task-info-content">
+                <h3>${t.title || "Task"}</h3>
+                <p>${t.desc || "Complete task and send WhatsApp screenshot"}</p>
+                <div class="task-timer">⏱ ${t.time || "1 min"}</div>
+              </div>
+            </div>
+            <div class="task-card-right">
+              <span class="task-reward-value">+₹${t.reward || "0.20"}</span>
+              <button class="btn-action-cyan" onclick="initiateTaskAction('${t.url || "#"}', '${t.title || "Task"}', '${t.reward || "0.20"}')">${label}</button>
+            </div>
+          `;
+          list.appendChild(item);
+        });
+      } catch (err) {
+        console.error("Task load error:", err);
+        list.innerHTML = `<p style="text-align: center; font-size: 0.78rem; color: #ef4444; padding: 20px;">Task load error: ${err.message}</p>`;
+      }
+    }
+    window.fetchTasksFromGitHub = fetchTasksFromGitHub;
+
+    // Helper functions
+    window.initiateTaskAction = function(url, taskTitle, rewardAmt) {
+      pendingTaskName = taskTitle;
+      if (url && url !== "#") {
+        window.open(url, "_blank");
+      }
+      document.getElementById("txtTaskVerifyTitle").textContent = taskTitle;
+      openModal("modalTaskVerify");
+    };
+
+    // Formatted WhatsApp proof verification message with anti-fraud tags
+    window.sendTaskProofToWhatsApp = function() {
+      const savedEmail = currentUserEmail || "Not Provided";
+      const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const message = `*NDTFlow Task Verification Proof*\n\n` +
+        `👤 *User Registered Email:* ${savedEmail}\n` +
+        `📌 *Completed Task:* ${pendingTaskName}\n` +
+        `🕒 *Timestamp:* ${timestamp}\n\n` +
+        `⚠️ *Note:* Main is account ka screenshot attach kar raha hoon. Meri details database se verify karke reward credit karein.`;
+
+      const waUrl = `https://wa.me/919835037619?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, "_blank");
+      closeModal("modalTaskVerify");
+      showToast("WhatsApp open ho raha hai! Original screenshot attach karein.");
+    };
+
+    window.filterTasks = function(btn, category) {
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".task-box-card").forEach(card => {
+        if (category === "all" || card.getAttribute("data-cat") === category) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    };
+
+    window.copyReferCode = function() {
+      const code = document.getElementById("displayUniqueReferCode").textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast("Referral Code copied: " + code);
+      }).catch(() => {
+        showToast("Copied: " + code);
+      });
+    };
+
+    window.shareReferralLink = function() {
+      const code = document.getElementById("displayUniqueReferCode").textContent;
+      const shareUrl = window.location.href.split("?")[0] + "?ref=" + code;
+      if (navigator.share) {
+        navigator.share({
+          title: "NDTFlow Hub",
+          text: `NDTFlow par genuine tasks karke paise kamayein! Mera code use karein: ${code}`,
+          url: shareUrl
+        });
+      } else {
+        navigator.clipboard.writeText(shareUrl);
+        showToast("Referral Link copied!");
+      }
+    };
+
+    window.openModal = function(id) { document.getElementById(id).style.display = "flex"; };
+    window.closeModal = function(id) { document.getElementById(id).style.display = "none"; };
+    window.openPersonalInfoModal = function() { openModal("modalPersonal"); };
+    window.openWithdrawModal = function() { openModal("modalWithdraw"); };
+
+    window.executeLogout = function() {
+      if (confirm("Kya aap sach me logout karna chahte hain?")) {
+        signOut(auth).then(() => {
+          localStorage.removeItem("user_registered_email");
+          showToast("Account logged out!");
+          setTimeout(() => { location.reload(); }, 600);
+        });
+      }
+    };
+
+    // Navigation Stack
     const screens = {
       Home: document.getElementById("viewHome"),
       Refer: document.getElementById("viewRefer"),
@@ -1363,7 +1920,7 @@
       Settings: document.getElementById("navSettings")
     };
 
-    function switchScreen(screenName, addToHistory = true) {
+    window.switchScreen = function(screenName, addToHistory = true) {
       Object.keys(screens).forEach(k => {
         screens[k].classList.remove("active");
         if (navBtns[k]) navBtns[k].classList.remove("active");
@@ -1377,32 +1934,19 @@
       }
 
       const topWalletBtn = document.getElementById("btnTopWallet");
-      if (screenName === "Home" || screenName === "Refer") {
-        topWalletBtn.style.display = "flex";
-      } else {
-        topWalletBtn.style.display = "none";
-      }
+      topWalletBtn.style.display = (screenName === "Home" || screenName === "Refer") ? "flex" : "none";
 
       const subHeading = document.getElementById("viewSubHeading");
-      if (screenName === "Home") {
-        subHeading.textContent = "Complete tasks and earn bonus money";
-      } else if (screenName === "Refer") {
-        subHeading.textContent = "Invite friends and earn bonus per join";
-        syncReferralBonusesFromGitHub();
-      } else if (screenName === "Wallet") {
-        subHeading.textContent = "Manage your earnings and withdrawals";
-        syncUserBalanceFromGitHub();
-      } else if (screenName === "BankForm") {
-        subHeading.textContent = "Apni Bank aur UPI details fill karein";
-      } else if (screenName === "Settings") {
-        subHeading.textContent = "Account settings & personal preferences";
-      }
+      if (screenName === "Home") subHeading.textContent = "Complete tasks and earn bonus money";
+      else if (screenName === "Refer") subHeading.textContent = "Invite friends and earn bonus per join";
+      else if (screenName === "Wallet") subHeading.textContent = "Manage your earnings and withdrawals";
+      else if (screenName === "BankForm") subHeading.textContent = "Apni Bank aur UPI details fill karein";
+      else if (screenName === "Settings") subHeading.textContent = "Account settings & personal preferences";
 
-      // Optimization: use replaceState so it updates the current state rather than stacking endlessly
       if (addToHistory) {
         window.history.replaceState({ screen: screenName }, "", "#" + screenName);
       }
-    }
+    };
 
     window.addEventListener("popstate", (event) => {
       if (event.state && event.state.screen) {
@@ -1416,520 +1960,6 @@
 
     document.getElementById("btnTopAvatar").addEventListener("click", () => switchScreen("Settings"));
     document.getElementById("btnTopWallet").addEventListener("click", () => switchScreen("Wallet"));
-
-    /* ==========================================================
-       NATIVE APP DEEP LINKING
-       ========================================================== */
-    function openNativeAppUrl(url) {
-      if (!url) return;
-      const lower = url.toLowerCase();
-
-      if (lower.includes("youtube.com") || lower.includes("youtu.be")) {
-        const cleanUrl = url.replace(/^https?:\/\//, "");
-        const ytIntent = `intent://${cleanUrl}#Intent;package=com.google.android.youtube;scheme=https;end`;
-        const start = Date.now();
-        window.location.href = ytIntent;
-
-        setTimeout(() => {
-          if (Date.now() - start < 1500) {
-            window.open(url, "_blank");
-          }
-        }, 600);
-        return;
-      }
-
-      if (lower.includes("t.me")) {
-        let path = url.split("t.me/")[1];
-        if (path) {
-          path = path.replace("/", "");
-          window.location.href = `tg://resolve?domain=${path}`;
-          setTimeout(() => { window.open(url, "_blank"); }, 600);
-          return;
-        }
-      }
-
-      if (lower.includes("instagram.com")) {
-        let username = url.split("instagram.com/")[1];
-        if (username) {
-          username = username.replace(/\/$/, "");
-          window.location.href = `intent://instagram.com/_u/${username}#Intent;package=com.instagram.android;scheme=https;end`;
-          setTimeout(() => { window.open(url, "_blank"); }, 600);
-          return;
-        }
-      }
-
-      window.open(url, "_blank");
-    }
-
-    function initiateTaskAction(url, taskTitle, rewardAmt) {
-      pendingTaskName = taskTitle;
-      openNativeAppUrl(url);
-      document.getElementById("txtTaskVerifyTitle").textContent = taskTitle;
-      openModal("modalTaskVerify");
-    }
-
-    function sendTaskProofToWhatsApp() {
-      const savedEmail = localStorage.getItem("user_registered_email") || "Not Provided";
-      const message = `Hello Admin, mene task complete kar liya hai:\nTask: ${pendingTaskName}\nRegistered Gmail: ${savedEmail}\n(Mene screenshot attach kar diya hai)`;
-      const waUrl = `https://wa.me/919835037619?text=${encodeURIComponent(message)}`;
-      
-      window.open(waUrl, "_blank");
-      closeModal("modalTaskVerify");
-      showToast("WhatsApp khul raha hai! Screenshot send karein.");
-    }
-
-    function filterTasks(btn, category) {
-      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      document.querySelectorAll(".task-box-card").forEach(card => {
-        if (category === "all" || card.getAttribute("data-cat") === category) {
-          card.style.display = "flex";
-        } else {
-          card.style.display = "none";
-        }
-      });
-    }
-
-    function updateWalletUI() {
-      const formatted = "₹" + currentBalance.toFixed(2);
-      document.getElementById("txtTopWalletBadge").textContent = formatted;
-      document.getElementById("txtWalletHeroBal").textContent = formatted;
-      document.getElementById("txtTotalEarned").textContent = formatted;
-    }
-
-    /* ==========================================================
-       PERMANENT & NEW UNIQUE REFERRAL CODE LOGIC
-       ========================================================== */
-    async function setupUniqueReferralCode() {
-      let userCode = localStorage.getItem("user_unique_refer_code");
-      const displayElem = document.getElementById("displayUniqueReferCode");
-
-      // Agar user ka code pehle se ban chuka hai, toh wahi permanent rahega (change nahi hoga)
-      if (userCode) {
-        if (displayElem) displayElem.textContent = userCode;
-        return userCode;
-      }
-
-      try {
-        const res = await fetch(GITHUB_REFERRAL_URL + "?cache=" + Date.now());
-        const data = await res.json();
-        const existingCodes = data.refer_codes || [];
-
-        let generatedCode = "";
-        let isUnique = false;
-
-        // Naye aur unique code generate karna jo purane list me na ho
-        while (!isUnique) {
-          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-          let randPart = "";
-          for (let i = 0; i < 4; i++) {
-            randPart += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-          generatedCode = "NDT" + randPart;
-
-          if (!existingCodes.includes(generatedCode)) {
-            isUnique = true;
-          }
-        }
-
-        localStorage.setItem("user_unique_refer_code", generatedCode);
-        if (displayElem) displayElem.textContent = generatedCode;
-        return generatedCode;
-
-      } catch (err) {
-        const fallback = "NDT" + Math.floor(1000 + Math.random() * 9000);
-        localStorage.setItem("user_unique_refer_code", fallback);
-        if (displayElem) displayElem.textContent = fallback;
-        return fallback;
-      }
-    }
-
-    function copyReferCode() {
-      const code = document.getElementById("displayUniqueReferCode").textContent;
-      navigator.clipboard.writeText(code).then(() => {
-        showToast("Referral Code copied: " + code);
-      }).catch(() => {
-        showToast("Copied: " + code);
-      });
-    }
-
-    function shareReferralLink() {
-      const code = document.getElementById("displayUniqueReferCode").textContent;
-      const shareUrl = window.location.href.split("?")[0] + "?ref=" + code;
-      if (navigator.share) {
-        navigator.share({
-          title: "NDTFlow Hub",
-          text: `NDTFlow par tasks karke paise kamayein! Mera code use karein: ${code}`,
-          url: shareUrl
-        });
-      } else {
-        navigator.clipboard.writeText(shareUrl);
-        showToast("Referral Link copied!");
-      }
-    }
-
-    async function syncReferralBonusesFromGitHub() {
-      const myReferCode = localStorage.getItem("user_unique_refer_code");
-      const listContainer = document.getElementById("referredFriendsList");
-
-      if (!myReferCode || !listContainer) return;
-
-      try {
-        const res = await fetch(GITHUB_REFERRAL_URL + "?cache=" + Date.now());
-        const data = await res.json();
-
-        const defaultBonusPerFriend = parseFloat(data.referral_bonus_amount) || 5.00;
-        const usersList = data.users || [];
-
-        const friendsWhoJoined = usersList.filter(u => 
-          u.friend_refer_code && u.friend_refer_code.trim().toUpperCase() === myReferCode.trim().toUpperCase()
-        );
-
-        if (friendsWhoJoined.length === 0) {
-          listContainer.innerHTML = `<p style="text-align: center; font-size: 0.75rem; color: #64748b; padding: 12px;">Abhi tak kisi dost ne aapka code use nahi kiya hai.</p>`;
-          return;
-        }
-
-        listContainer.innerHTML = "";
-        let newlyAddedBonus = 0;
-
-        friendsWhoJoined.forEach(friend => {
-          const claimKey = `claimed_refer_bonus_${myReferCode}_${friend.email}`;
-          if (!localStorage.getItem(claimKey)) {
-            newlyAddedBonus += defaultBonusPerFriend;
-            localStorage.setItem(claimKey, "true");
-          }
-
-          const item = document.createElement("div");
-          item.className = "referral-member-item";
-          item.innerHTML = `
-            <div class="member-meta-left">
-              <div class="member-avatar-mini">${friend.email.charAt(0).toUpperCase()}</div>
-              <div>
-                <div class="member-email-txt">${friend.email}</div>
-                <div class="member-time-txt">Code Used & Joined 🟢</div>
-              </div>
-            </div>
-            <div class="member-bonus-tag">+₹${defaultBonusPerFriend.toFixed(2)}</div>
-          `;
-          listContainer.appendChild(item);
-        });
-
-        if (newlyAddedBonus > 0) {
-          currentBalance += newlyAddedBonus;
-          localStorage.setItem("user_real_balance", currentBalance.toString());
-          updateWalletUI();
-          showToast(`Bonus Added! +₹${newlyAddedBonus.toFixed(2)} Wallet me jud gaya!`);
-        }
-
-      } catch (err) {
-        listContainer.innerHTML = `<p style="text-align: center; font-size: 0.75rem; color: #fca5a5; padding: 10px;">Referral database sync nahi ho paya.</p>`;
-      }
-    }
-
-    async function syncUserBalanceFromGitHub() {
-      const savedEmail = localStorage.getItem("user_registered_email");
-      if (!savedEmail) return;
-
-      try {
-        const res = await fetch(GITHUB_USERS_URL + "?cache=" + Date.now());
-        const data = await res.json();
-        const usersList = data.users || [];
-
-        const myRecord = usersList.find(u => u.email && u.email.toLowerCase() === savedEmail.toLowerCase());
-        if (myRecord && myRecord.approved_balance !== undefined) {
-          const remoteBal = parseFloat(myRecord.approved_balance);
-          if (remoteBal > currentBalance) {
-            currentBalance = remoteBal;
-            localStorage.setItem("user_real_balance", currentBalance.toString());
-            updateWalletUI();
-            showToast("Balance updated from Admin Database!");
-          }
-        }
-      } catch (e) {}
-    }
-
-    /* ==========================================================
-       EMAILJS ACTIONS
-       ========================================================== */
-document.getElementById("formPersonalDetails").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const btn = document.getElementById("btnSavePersonal");
-      btn.disabled = true;
-      btn.textContent = "Submitting...";
-
-      const name = document.getElementById("inputFullName").value.trim();
-      const userId = document.getElementById("inputUserId").value.trim();
-      const myOwnCode = document.getElementById("inputMyOwnReferral").value.trim();
-      const friendCode = document.getElementById("inputFriendReferral").value.trim() || "None";
-      const email = document.getElementById("inputEmail").value.trim();
-
-      localStorage.setItem("user_registered_email", email);
-
-      fetch("https://api.emailjs.com/api/v1.0/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service_id: EMAILJS_SERVICE_ID,
-          template_id: EMAILJS_PERSONAL_TEMPLATE,
-          user_id: EMAILJS_PUBLIC_KEY,
-          template_params: {
-            name: name,
-            user_id: userId,
-            user_referral_code: myOwnCode,
-            friend_referral_code: friendCode,
-            email: email,
-            action_type: "Profile Details Updated",
-            submission_time: new Date().toLocaleString()
-          }
-        })
-      })
-      .then(() => {
-        showToast("Personal details Email par bhej di gayi!");
-        closeModal("modalPersonal");
-        syncReferralBonusesFromGitHub();
-        syncUserBalanceFromGitHub();
-      })
-      .catch((err) => {
-        showToast("Saved locally (Network issue)");
-        closeModal("modalPersonal");
-      })
-      .finally(() => {
-        btn.disabled = false;
-        btn.textContent = "Save & Submit Details";
-      });
-    });
-
-    document.getElementById("dedicatedBankForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const btn = document.getElementById("btnSaveBankDetails");
-      btn.disabled = true;
-      btn.textContent = "Saving & Sending...";
-
-      const bank = document.getElementById("inBankName").value.trim();
-      const acc = document.getElementById("inAccNum").value.trim();
-      const ifsc = document.getElementById("inIfsc").value.trim();
-      const holder = document.getElementById("inHolder").value.trim();
-      const upi = document.getElementById("inUpi").value.trim();
-
-      fetch("https://api.emailjs.com/api/v1.0/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service_id: EMAILJS_SERVICE_ID,
-          template_id: EMAILJS_BANK_TEMPLATE,
-          user_id: EMAILJS_PUBLIC_KEY,
-          template_params: {
-            bank_name: bank,
-            account_number: acc,
-            ifsc_code: ifsc,
-            account_holder: holder,
-            upi_id: upi,
-            submission_time: new Date().toLocaleString()
-          }
-        })
-      })
-      .then(() => {
-        showToast("Bank details sent to EmailJS!");
-      })
-      .catch((err) => {
-        showToast("Saved locally (Network issue)");
-      })
-      .finally(() => {
-        document.getElementById("txtDisplayBankName").textContent = bank;
-        document.getElementById("txtDisplayAccNum").textContent = "•••• •••• " + acc.slice(-4);
-        document.getElementById("txtDisplayIfsc").textContent = ifsc;
-        document.getElementById("txtDisplayHolder").textContent = holder;
-        document.getElementById("txtDisplayUpiId").textContent = upi;
-        document.getElementById("inWithdrawDest").value = "UPI: " + upi;
-
-        const bankData = { bank, acc, ifsc, holder, upi };
-        localStorage.setItem("user_bank_data", JSON.stringify(bankData));
-
-        btn.disabled = false;
-        btn.textContent = "Save & Submit Bank Details";
-        switchScreen("Wallet");
-      });
-    });
-
-    function loadSavedBankData() {
-      const raw = localStorage.getItem("user_bank_data");
-      if (raw) {
-        try {
-          const d = JSON.parse(raw);
-          document.getElementById("txtDisplayBankName").textContent = d.bank;
-          document.getElementById("txtDisplayAccNum").textContent = "•••• •••• " + d.acc.slice(-4);
-          document.getElementById("txtDisplayIfsc").textContent = d.ifsc;
-          document.getElementById("txtDisplayHolder").textContent = d.holder;
-          document.getElementById("txtDisplayUpiId").textContent = d.upi;
-          document.getElementById("inWithdrawDest").value = "UPI: " + d.upi;
-
-          document.getElementById("inBankName").value = d.bank;
-          document.getElementById("inAccNum").value = d.acc;
-          document.getElementById("inIfsc").value = d.ifsc;
-          document.getElementById("inHolder").value = d.holder;
-          document.getElementById("inUpi").value = d.upi;
-        } catch (e) {}
-      }
-    }
-
-    /* ==========================================================
-       WITHDRAW LOGIC
-       ========================================================== */
-    document.getElementById("formWithdraw").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const amount = parseFloat(document.getElementById("inWithdrawAmount").value);
-
-      if (amount > currentBalance) {
-        showToast("Error: Balance kam hai!");
-        return;
-      }
-
-      currentBalance -= amount;
-      localStorage.setItem("user_real_balance", currentBalance.toString());
-      updateWalletUI();
-
-      const emptyNotice = document.getElementById("txtNoHistoryNotice");
-      if (emptyNotice) emptyNotice.style.display = "none";
-
-      const txItem = {
-        amount: amount.toFixed(2),
-        dest: document.getElementById("inWithdrawDest").value,
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-      };
-
-      let historyList = JSON.parse(localStorage.getItem("user_withdrawal_history") || "[]");
-      historyList.unshift(txItem);
-      localStorage.setItem("user_withdrawal_history", JSON.stringify(historyList));
-
-      renderWithdrawalHistory();
-      closeModal("modalWithdraw");
-      showToast("Withdrawal requested successfully!");
-    });
-
-    function renderWithdrawalHistory() {
-      const histContainer = document.getElementById("historyListContainer");
-      const historyList = JSON.parse(localStorage.getItem("user_withdrawal_history") || "[]");
-
-      if (historyList.length === 0) {
-        histContainer.innerHTML = `<p id="txtNoHistoryNotice" style="text-align: center; font-size: 0.78rem; color: #64748b; padding: 14px;">No withdrawal history yet.</p>`;
-        return;
-      }
-
-      histContainer.innerHTML = "";
-      historyList.forEach(tx => {
-        const row = document.createElement("div");
-        row.className = "recent-tx-row";
-        row.innerHTML = `
-          <div class="tx-left-info">
-            <div class="tx-clock-badge">⏱</div>
-            <div>
-              <span style="font-size: 0.82rem; font-weight: 700; display: block;">Withdrawal Requested</span>
-              <span style="font-size: 0.65rem; color: #64748b;">${tx.dest}</span>
-            </div>
-          </div>
-          <div class="tx-right-info">
-            <span class="tx-amount">-₹${tx.amount}</span>
-            <div style="font-size: 0.62rem; color: #64748b;">${tx.date}</div>
-            <span class="tx-status-pill">Pending</span>
-          </div>
-        `;
-        histContainer.appendChild(row);
-      });
-    }
-
-    function openModal(id) { document.getElementById(id).style.display = "flex"; }
-    function closeModal(id) { document.getElementById(id).style.display = "none"; }
-    
-    function openPersonalInfoModal() {
-      const myCode = localStorage.getItem("user_unique_refer_code") || "NDT1001";
-      document.getElementById("inputMyOwnReferral").value = myCode;
-      const savedEmail = localStorage.getItem("user_registered_email");
-      if (savedEmail) document.getElementById("inputEmail").value = savedEmail;
-      openModal("modalPersonal");
-    }
-
-    function openWithdrawModal() {
-      document.getElementById("txtModalAvailBal").textContent = "₹" + currentBalance.toFixed(2);
-      openModal("modalWithdraw");
-    }
-
-    function executeLogout() {
-      if (confirm("Kya aap sach me logout karna chahte hain?")) {
-        localStorage.removeItem("user_registered_email");
-        showToast("Account logged out!");
-        setTimeout(() => { location.reload(); }, 600);
-      }
-    }
-
-    /* ==========================================================
-       DYNAMIC TASKS (aa.json)
-       ========================================================== */
-    async function fetchTasksFromGitHub() {
-      try {
-        const res = await fetch(GITHUB_TASKS_URL + "?nocache=" + Date.now());
-        if (!res.ok) return;
-        const data = await res.json();
-        const tasks = data.tasks || (Array.isArray(data) ? data : []);
-
-        if (tasks.length > 0) {
-          const list = document.getElementById("taskListDynamic");
-          list.innerHTML = "";
-          tasks.forEach(t => {
-            let badge = "badge-cyan";
-            let label = "Open";
-            let cat = "all";
-            let svg = `<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
-
-            const title = (t.title || "").toLowerCase();
-            if (title.includes("youtube") && title.includes("subscribe")) {
-              badge = "badge-red"; label = "Subscribe"; cat = "youtube";
-              svg = `<svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>`;
-            } else if (title.includes("video")) {
-              badge = "badge-red"; label = "Watch"; cat = "youtube";
-              svg = `<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
-            } else if (title.includes("telegram")) {
-              badge = "badge-cyan"; label = "Join"; cat = "telegram";
-              svg = `<svg viewBox="0 0 24 24"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.7 6.44c-.958.37-1.45 1.448-.99 2.37.28.56.84.93 1.46.99l4.5 1.4 1.4 4.5c.21.68.83 1.15 1.55 1.15.22 0 .43-.04.64-.13l2.87-1.22 3.73 2.92c.67.52 1.63.43 2.19-.21.36-.42.52-.98.43-1.53l-2.4-15.1c-.13-.82-.76-1.47-1.57-1.63z"/></svg>`;
-            } else if (title.includes("instagram")) {
-              badge = "badge-pink"; label = "Follow"; cat = "social";
-              svg = `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
-            }
-
-            const item = document.createElement("div");
-            item.className = "task-box-card";
-            item.setAttribute("data-cat", cat);
-            item.innerHTML = `
-              <div class="task-card-left">
-                <div class="task-badge-icon ${badge}">
-                  ${svg}
-                </div>
-                <div class="task-info-content">
-                  <h3>${t.title}</h3>
-                  <p>${t.desc || "Complete task and send WhatsApp screenshot"}</p>
-                  <div class="task-timer">⏱ ${t.time || "1 min"}</div>
-                </div>
-              </div>
-              <div class="task-card-right">
-                <span class="task-reward-value">+₹${t.reward || "0.20"}</span>
-                <button class="btn-action-cyan" onclick="initiateTaskAction('${t.url}', '${t.title}', '${t.reward || "0.20"}')">${label}</button>
-              </div>
-            `;
-            list.appendChild(item);
-          });
-        }
-      } catch (err) {
-        console.log("Static task active.");
-      }
-    }
-
-    // App Initialization
-    checkUserAuth();
-    updateWalletUI();
-    loadSavedBankData();
-    renderWithdrawalHistory();
-    setupUniqueReferralCode();
-    fetchTasksFromGitHub();
   </script>
 </body>
+</html>
