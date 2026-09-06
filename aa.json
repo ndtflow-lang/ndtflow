@@ -1,78 +1,18 @@
 {
-  "refer_codes": [
-    "NDT1001",
-    "NDT1002",
-    "NDT1003",
-    "NDT88SK",
-    "NDT9999"
-  ],
-  "referral_bonus_amount": 5.00,
-  "users": [
-    {
-      "email": "user1@gmail.com",
-      "user_refer_code": "NDT1001",
-      "friend_refer_code": "None",
-      "approved_balance": 15.50
-    },
-    {
-      "email": "user2@gmail.com",
-      "user_refer_code": "NDT1002",
-      "friend_refer_code": "NDT1001",
-      "approved_balance": 0.00
-    },
-    {
-      "email": "rajivkumar373@gmail.com",
-      "user_refer_code": "NDTCT2R",
-      "friend_refer_code": "NDT1001",
-      "approved_balance": 100.00
-    }
-    {
-      "email": "suraj504kt@gmail.com",
-      "user_refer_code": "NDTE3E3",
-      "friend_refer_code": "NDT1234",
-      "approved_balance": 5.00
-    }
-  ],
   "tasks": [
     {
-      "id": "yt_sub",
-      "title": "Subscribe YouTube Channel",
-      "desc": "Subscribe to our channel & take screenshot",
+      "title": "YouTube Subscribe Task",
+      "desc": "Channel ko subscribe karein aur proof bhejein",
+      "reward": "2.00",
       "time": "1 min",
-      "reward": 1.10,
-      "url": "https://youtube.com/@sunnisk-h5t?si=3fuOSaVDf6E8732k"
+      "url": "https://youtube.com"
     },
     {
-      "id": "yt_watch",
-      "title": "YouTube Video Bonus",
-      "desc": "Watch video full & take screenshot",
-      "time": "5 min",
-      "reward": 2.30,
-      "url": "https://youtube.com/@sunnisk-h5t?si=3fuOSaVDf6E8732k"
-    },
-    {
-      "id": "tg_proofs",
-      "title": "Join Payment Proofs",
-      "desc": "Join official channel & take screenshot",
-      "time": "1 min",
-      "reward": 0.50,
-      "url": "https://t.me/ndtflow"
-    },
-    {
-      "id": "tg_loot",
-      "title": "Join Daily Loot Deals",
-      "desc": "Get instant updates & take screenshot",
-      "time": "1 min",
-      "reward": 0.50,
-      "url": "https://t.me/ndtflow"
-    },
-    {
-      "id": "ig_follow",
-      "title": "Follow Instagram Page",
-      "desc": "Follow our official page & screenshot",
-      "time": "1 min",
-      "reward": 0.50,
-      "url": "https://instagram.com/aapka_username"
+      "title": "Telegram Join Task",
+      "desc": "Official Telegram channel join karein",
+      "reward": "1.50",
+      "time": "30 sec",
+      "url": "https://t.me"
     }
   ]
 }
