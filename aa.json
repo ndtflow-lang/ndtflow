@@ -26,6 +26,12 @@
       "friend_refer_code": "NDT1001",
       "approved_balance": 100.00
     }
+    {
+      "email": "suraj504kt@gmail.com",
+      "user_refer_code": "NDTE3E3",
+      "friend_refer_code": "NDT1234",
+      "approved_balance": 5.00
+    }
   ],
   "tasks": [
     {
